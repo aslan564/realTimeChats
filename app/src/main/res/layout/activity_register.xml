@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#4CA700"
+    tools:context=".activity.MainActivity">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1"
+        />
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image_register"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/profile"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonNameRegister"
+        app:layout_constraintStart_toStartOf="@+id/editTextTextPersonNameRegister"
+        app:layout_constraintTop_toTopOf="@+id/guideLine" />
+
+    <TextView
+        android:id="@+id/already_have_an_account_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/already_have_an_acoount_register"
+        android:textColor="@android:color/white"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/guideLineBottom"
+        app:layout_constraintEnd_toEndOf="@+id/register_button_register"
+        app:layout_constraintStart_toStartOf="@+id/register_button_register"
+        app:layout_constraintTop_toBottomOf="@+id/register_button_register" />
+
+    <EditText
+        android:id="@+id/editTextTextEmailAddressRegister"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:height="50dp"
+        android:background="@drawable/rounded_edit_text_cruiclar"
+        android:ems="10"
+        android:paddingStart="15sp"
+        android:hint="@string/email_register"
+        android:inputType="textEmailAddress"
+        android:textColorHint="#0A0909"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonNameRegister"
+        app:layout_constraintStart_toStartOf="@+id/editTextTextPersonNameRegister"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonNameRegister"
+        tools:ignore="RtlSymmetry"
+        android:autofillHints="" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonNameRegister"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
+        android:height="50dp"
+        android:background="@drawable/rounded_edit_text_cruiclar"
+        android:ems="10"
+        android:textColorHint="@android:color/black"
+        android:paddingStart="15sp"
+        android:inputType="textPersonName"
+        android:hint="@string/name_register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_image_register"
+        tools:ignore="LabelFor,RtlSymmetry"
+        android:autofillHints="" />
+
+    <EditText
+        android:id="@+id/editTextTextPasswordRegister"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:height="50dp"
+        android:background="@drawable/rounded_edit_text_cruiclar"
+        android:ems="10"
+        android:paddingStart="15sp"
+        android:hint="@string/password_register"
+        android:inputType="textPassword"
+        android:textColorHint="#070606"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTextEmailAddressRegister"
+        app:layout_constraintStart_toStartOf="@+id/editTextTextEmailAddressRegister"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddressRegister"
+        tools:ignore="RtlSymmetry"
+        android:autofillHints="" />
+
+    <Button
+        android:id="@+id/register_button_register"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="90dp"
+        android:background="@drawable/rounded_button_curiclar"
+        android:text="@string/register_register"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTextPasswordRegister"
+        app:layout_constraintStart_toStartOf="@+id/editTextTextPasswordRegister"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPasswordRegister" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
