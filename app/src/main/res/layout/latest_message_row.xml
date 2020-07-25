@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#E8E6E6"
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewLatestMessage"
-        android:layout_width="86dp"
-        android:layout_height="86dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintCircleRadius="2dp"
@@ -24,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:textStyle="bold"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textColor="@android:color/black"
         android:layout_marginTop="4dp"
         android:text="@string/username_latest_message"
@@ -36,11 +37,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:textSize="20sp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:text="@string/latest_message_here_latest_message"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewLatestMessage"
@@ -55,4 +56,15 @@
         app:layout_constraintEnd_toEndOf="@+id/imageViewLatestMessage"
         app:layout_constraintStart_toStartOf="@+id/imageViewLatestMessage"
         app:layout_constraintTop_toTopOf="@+id/imageViewLatestMessage" />
+
+    <TextView
+        android:id="@+id/textViewLatestMesageTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/_15_07"
+        app:layout_constraintBottom_toTopOf="@+id/textViewLatestMessageText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewLatestMessageUsername" />
 </androidx.constraintlayout.widget.ConstraintLayout>

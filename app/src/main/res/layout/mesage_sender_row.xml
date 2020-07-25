@@ -24,7 +24,7 @@
         android:layout_marginStart="16dp"
         android:background="@drawable/message_text_background"
         android:maxWidth="250dp"
-        android:padding="15dp"
+        android:padding="10dp"
         android:text="@string/my_message_here"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/imageViewFromChatLog"

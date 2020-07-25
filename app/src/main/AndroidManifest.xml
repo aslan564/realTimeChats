@@ -25,7 +25,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.LatestMessageActivity" />
         </activity>
-        <activity android:name=".activity.LatestMessageActivity" />
+        <activity android:name=".activity.LatestMessageActivity"
+           />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.MainActivity" />
         <activity

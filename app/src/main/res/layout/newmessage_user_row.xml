@@ -4,12 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#D2D3D3"
+    android:layout_marginTop="1dp"
+    android:layout_marginBottom="1dp"
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewNewMessageProfile"
-        android:layout_width="86dp"
-        android:layout_height="86dp"
+        android:layout_width="66dp"
+        android:layout_height="66dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
@@ -26,6 +29,7 @@
         android:layout_marginEnd="8dp"
         android:textStyle="bold"
         android:textSize="18sp"
+        android:textColor="@android:color/black"
         android:hint="@string/username_news"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewNewMessageProfile"
         app:layout_constraintEnd_toEndOf="parent"

@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import com.aslanovaslan.kotlinmessenger.R
 import com.aslanovaslan.kotlinmessenger.activity.LatestMessageActivity
+import com.aslanovaslan.kotlinmessenger.internal.DateConverter
 import com.aslanovaslan.kotlinmessenger.model.ChatMessage
 import com.aslanovaslan.kotlinmessenger.model.User
 import com.google.firebase.auth.FirebaseAuth
@@ -21,9 +22,8 @@ class LatestMessageItem(private val chatMessage: ChatMessage) : Item() {
     var partnerUserItem:User?=null
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.apply {
-
             itemView.textViewLatestMessageText.text = chatMessage.text
-
+            itemView.textViewLatestMesageTime.text= null
         }
 
         val chatPartnerId =

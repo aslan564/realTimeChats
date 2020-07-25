@@ -1,14 +1,17 @@
 package com.aslanovaslan.kotlinmessenger.activity
 
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aslanovaslan.kotlinmessenger.R
+import com.aslanovaslan.kotlinmessenger.internal.DateConverter
 import com.aslanovaslan.kotlinmessenger.model.ChatMessage
 import com.aslanovaslan.kotlinmessenger.model.User
 import com.aslanovaslan.kotlinmessenger.recycleritem.MessageReceiverItem
 import com.aslanovaslan.kotlinmessenger.recycleritem.MessageSenderItem
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
@@ -17,6 +20,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_chat_log.*
 
+@Suppress("NAME_SHADOWING")
 class ChatLog : AppCompatActivity() {
     private val groupAdapter = GroupAdapter<GroupieViewHolder>()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +31,7 @@ class ChatLog : AppCompatActivity() {
 
         if (user != null) {
             supportActionBar!!.title = user.username
-            supportActionBar!!.subtitle = (System.currentTimeMillis() / 1000).toString()
+            supportActionBar!!.subtitle =null
         } else {
             Log.d(TAG, "onCreate: $user")
         }
@@ -45,6 +49,7 @@ class ChatLog : AppCompatActivity() {
             }
         }
         recyclerViewChatLog.apply {
+
             adapter = groupAdapter
             layoutManager = LinearLayoutManager(this@ChatLog)
             groupAdapter.notifyDataSetChanged()

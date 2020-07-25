@@ -29,11 +29,18 @@ class LatestMessageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_latest_message)
+
+        supportActionBar!!.setDisplayShowHomeEnabled(true);
+        //supportActionBar!!.setLogo(R.drawable.ic_fire_emoji);
+        supportActionBar!!.setDisplayUseLogoEnabled(true);
+
+        supportActionBar!!.title = "Messages"
         isUserLoginOrNull()
         fetchCurrentUser()
         fetchLastMessageFireBase()
-        createProgressBar()
+
         recyclerViewLatestMessage.apply {
+
             adapter = groupAdapter
             layoutManager = LinearLayoutManager(this@LatestMessageActivity)
             addItemDecoration(
@@ -41,12 +48,12 @@ class LatestMessageActivity : AppCompatActivity() {
                     this@LatestMessageActivity,
                     DividerItemDecoration.VERTICAL
                 )
-            )
 
-            groupAdapter.setOnItemClickListener {item, view ->
-                val intent=Intent(this@LatestMessageActivity,ChatLog::class.java)
-                val row=item as LatestMessageItem
-                intent.putExtra(NewMessageActivity.USER_DATA,row.partnerUserItem)
+            )
+            groupAdapter.setOnItemClickListener { item, view ->
+                val intent = Intent(this@LatestMessageActivity, ChatLog::class.java)
+                val row = item as LatestMessageItem
+                intent.putExtra(NewMessageActivity.USER_DATA, row.partnerUserItem)
                 startActivity(intent)
                 Log.d(TAG, "onCreate: $item")
             }
@@ -56,8 +63,11 @@ class LatestMessageActivity : AppCompatActivity() {
     private fun fetchLastMessageFireBase() {
         val currentUserId = FirebaseAuth.getInstance().currentUser!!.uid
         val lastMessage = Firebase.database.getReference("latest-messages").child(currentUserId)
-        lastMessage.addChildEventListener(object : ChildEventListener {
+        lastMessage.orderByChild("timestamp").addChildEventListener(object : ChildEventListener {
+
+
             override fun onCancelled(error: DatabaseError) {
+
             }
 
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
@@ -74,23 +84,13 @@ class LatestMessageActivity : AppCompatActivity() {
                 val messageItem = snapshot.getValue(ChatMessage::class.java) ?: return
                 latestMessageMap[snapshot.key!!] = messageItem
                 refreshRecyclerViewMessages()
-                cancelProgressBar()
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
 
             }
         })
-    }
 
-    private fun createProgressBar() {
-        progressBar = ProgressFragment()
-        progressBar.show(supportFragmentManager, "mainDialog")
-        progressBar.isCancelable = false
-    }
-
-    private fun cancelProgressBar() {
-        progressBar.dismiss()
     }
 
     private fun refreshRecyclerViewMessages() {

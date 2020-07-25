@@ -1,6 +1,9 @@
 package com.aslanovaslan.kotlinmessenger.model
 
-data class ChatMessage(
+import androidx.annotation.Keep
+import com.google.firebase.Timestamp
+@Keep
+class ChatMessage(
     val id: String,
     val text: String,
     val senderId: String,
