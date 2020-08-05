@@ -17,4 +17,7 @@
     <string name="username_latest_message">Username</string>
     <string name="latest_message_here_latest_message">Latest message here</string>
     <string name="_15_07">15 : 07</string>
+    <string name="user_profile">User Profile</string>
+    <string name="aslan_coder">Aslan Coder</string>
+    <string name="sender_image">sender image</string>
 </resources>

@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         job = Job()
+
+
         register_button_register.setOnClickListener {
             createProgressBar()
             if (createUserFireBase()) return@setOnClickListener
@@ -109,6 +111,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
             GlideApp.with(this)
                 .load(selectedImageBytes)
+                .placeholder(R.drawable.ic_fire_emoji)
                 .into(profile_image_register)
             /* if (selectedImagePath != null) {
 
@@ -129,12 +132,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         // addPictureStorage(compressPath)
     }
 
-    private fun addPictureStorage(compressPath: Uri?) {
-        if (compressPath != null) {
+    private fun addPictureStorage(uri: Uri?) {
+        if (uri != null) {
 
         val uuid = UUID.randomUUID()
         val ref = FirebaseStorage.getInstance().getReference("/image/$uuid")
-            ref.putFile(compressPath).addOnSuccessListener {
+            ref.putFile(uri).addOnSuccessListener {
                 ref.downloadUrl.addOnSuccessListener { uri ->
                     addUserToFirestormsDatabase(uri)
                     Log.d(TAG, "addPictureStorage: ${uri.path}")
@@ -151,7 +154,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }else {
             addUserToFirestormsDatabase(null)
         }
-        Log.d(TAG, "addPictureStorage: $compressPath")
+        Log.d(TAG, "addPictureStorage: $uri")
     }
 
     private fun addUserToFirestormsDatabase(uri: Uri?) {

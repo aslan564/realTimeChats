@@ -32,10 +32,7 @@ class NewMessageActivity : AppCompatActivity() {
         fetchUserFiresafe()
         createProgressBar()
 
-        /* recyclerViewNewMessage.apply {
-             //layoutManager= LinearLayoutManager(this@NewMessageActivity)
-             this.adapter = adapter
-         }*/
+
 
         Log.d(TAG, "onCreate: ${recyclerViewNewMessage.childCount}")
     }
@@ -100,8 +97,11 @@ class UserItem(var user: User, val context: Context) : Item() {
         viewHolder.apply {
             textViewNewMessageUsername.text = user.username
             GlideApp.with(context).load(user.profilePicturePath).centerCrop()
+                .placeholder(R.drawable.ic_fire_emoji)
                 .into(imageViewNewMessageProfile)
-
+            if (!user.userBio.isNullOrEmpty() && !user.userBio.isNullOrBlank()) {
+                textView_bio.text = user.userBio
+            }
         }
     }
 

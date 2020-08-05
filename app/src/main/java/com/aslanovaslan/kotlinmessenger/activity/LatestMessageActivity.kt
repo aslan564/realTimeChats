@@ -10,25 +10,40 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aslanovaslan.kotlinmessenger.R
 import com.aslanovaslan.kotlinmessenger.internal.ProgressFragment
-import com.aslanovaslan.kotlinmessenger.model.ChatMessage
+import com.aslanovaslan.kotlinmessenger.model.ChatTextMessage
 import com.aslanovaslan.kotlinmessenger.model.User
 import com.aslanovaslan.kotlinmessenger.recycleritem.LatestMessageItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.onesignal.OneSignal
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_latest_message.*
-import kotlin.math.log
+import kotlin.collections.HashMap
 
 class LatestMessageActivity : AppCompatActivity() {
     var groupAdapter = GroupAdapter<GroupieViewHolder>()
-    val latestMessageMap = HashMap<String, ChatMessage>()
+    val latestMessageMap = HashMap<String, ChatTextMessage>()
     private lateinit var progressBar: ProgressFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // OneSignal Initialization
+        OneSignal.startInit(this)
+            .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+            .unsubscribeWhenNotificationsAreDisabled(true)
+            .init()
         setContentView(R.layout.activity_latest_message)
+
+        OneSignal.idsAvailable { userId, registrationId ->
+            if (userId != null) {
+                Log.d(TAG, "onCreate: $userId")
+                val databaseRef = Firebase.database.reference
+                databaseRef.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("oneSignalIds").setValue(userId)
+            }
+        }
 
         supportActionBar!!.setDisplayShowHomeEnabled(true);
         //supportActionBar!!.setLogo(R.drawable.ic_fire_emoji);
@@ -63,7 +78,7 @@ class LatestMessageActivity : AppCompatActivity() {
     private fun fetchLastMessageFireBase() {
         val currentUserId = FirebaseAuth.getInstance().currentUser!!.uid
         val lastMessage = Firebase.database.getReference("latest-messages").child(currentUserId)
-        lastMessage.orderByChild("timestamp").addChildEventListener(object : ChildEventListener {
+        lastMessage.addChildEventListener(object : ChildEventListener {
 
 
             override fun onCancelled(error: DatabaseError) {
@@ -75,13 +90,13 @@ class LatestMessageActivity : AppCompatActivity() {
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                val messageItem = snapshot.getValue(ChatMessage::class.java) ?: return
+                val messageItem = snapshot.getValue(ChatTextMessage::class.java) ?: return
                 latestMessageMap[snapshot.key!!] = messageItem
                 refreshRecyclerViewMessages()
             }
 
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                val messageItem = snapshot.getValue(ChatMessage::class.java) ?: return
+                val messageItem = snapshot.getValue(ChatTextMessage::class.java) ?: return
                 latestMessageMap[snapshot.key!!] = messageItem
                 refreshRecyclerViewMessages()
             }
@@ -98,7 +113,7 @@ class LatestMessageActivity : AppCompatActivity() {
         latestMessageMap.values.forEach {
             groupAdapter.add(
                 LatestMessageItem(
-                    it
+                   it
                 )
             )
         }
