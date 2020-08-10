@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#4CA700"
-    tools:context=".activity.MainActivity">
+    tools:context=".activity.register.MainActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideLine"
@@ -37,7 +37,6 @@
         android:text="@string/already_have_an_acoount_register"
         android:textColor="@android:color/white"
         android:textStyle="italic"
-        app:layout_constraintBottom_toTopOf="@+id/guideLineBottom"
         app:layout_constraintEnd_toEndOf="@+id/register_button_register"
         app:layout_constraintStart_toStartOf="@+id/register_button_register"
         app:layout_constraintTop_toBottomOf="@+id/register_button_register" />

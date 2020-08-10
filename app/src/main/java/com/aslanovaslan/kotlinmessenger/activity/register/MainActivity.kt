@@ -1,4 +1,4 @@
-package com.aslanovaslan.kotlinmessenger.activity
+package com.aslanovaslan.kotlinmessenger.activity.register
 
 import android.app.Activity
 import android.content.Intent
@@ -11,6 +11,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.aslanovaslan.kotlinmessenger.R
+import com.aslanovaslan.kotlinmessenger.activity.chats.LatestMessageActivity
 import com.aslanovaslan.kotlinmessenger.glide.GlideApp
 import com.aslanovaslan.kotlinmessenger.internal.ProgressFragment
 import com.aslanovaslan.kotlinmessenger.model.User
@@ -113,11 +114,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 .load(selectedImageBytes)
                 .placeholder(R.drawable.ic_fire_emoji)
                 .into(profile_image_register)
-            /* if (selectedImagePath != null) {
-
-                 // imageCompress(selectedImagePath.path!!,this@MainActivity)
-                 //resizeImageToUploadStorage(selectedImagePathBitmap.toString())
-             }*/
             pictureJustChanged = true
         }
     }
@@ -126,20 +122,18 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private fun resizeImageToUploadStorage(selectedImagePath: String) {
         Log.d(TAG, "addPictureStorage: $selectedImagePath")
         val destinationFilePath =
-            File(Environment.getExternalStorageDirectory().absolutePath + "/DCIM/Chatskotlin/Images")
-        val imageBitmap = SiliCompressor.with(this).getCompressBitmap(selectedImagePath)
+            File(this.getExternalFilesDir("/")!!.absolutePath + "/DCIM/Chatskotlin/Images")
+        val imageBitmap = SiliCompressor.with(this).compress(selectedImagePath,destinationFilePath)
         Log.d(TAG, "resizeImageToUploadStorage: $imageBitmap")
-        // addPictureStorage(compressPath)
+       // addPictureStorage(imageBitmap)
     }
 
     private fun addPictureStorage(uri: Uri?) {
         if (uri != null) {
-
-        val uuid = UUID.randomUUID()
-        val ref = FirebaseStorage.getInstance().getReference("/image/$uuid")
+        val ref = FirebaseStorage.getInstance().getReference("/image/${UUID.randomUUID()}")
             ref.putFile(uri).addOnSuccessListener {
                 ref.downloadUrl.addOnSuccessListener { uri ->
-                    addUserToFirestormsDatabase(uri)
+                    addUserToDatabase(uri)
                     Log.d(TAG, "addPictureStorage: ${uri.path}")
                 }.addOnFailureListener {
                     Log.d(TAG, "addPictureStorage: ${it.message}")
@@ -149,20 +143,19 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 Log.d(TAG, "addPictureStorage: ${it.message}")
             }.addOnProgressListener {
                 progressBar.dialogProgress.text =
-                    (100 * it.bytesTransferred - it.totalByteCount).toString()
+                    (100 * ( it.bytesTransferred - it.totalByteCount)).toString()
             }
         }else {
-            addUserToFirestormsDatabase(null)
+            addUserToDatabase(null)
         }
         Log.d(TAG, "addPictureStorage: $uri")
     }
 
-    private fun addUserToFirestormsDatabase(uri: Uri?) {
+    private fun addUserToDatabase(uri: Uri?) {
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
-        Log.d(TAG, "addUserToFirestormsDatabase: $userId")
         val user = User(
             userId,
-            editTextTextPersonNameRegister.text.toString(),
+            editTextTextPersonNameRegister.text.toString().trim(),
             uri.toString()
         )
         val databaseRef = Firebase.database.reference

@@ -27,10 +27,14 @@ class MessageReceiverImageItem(
             GlideApp.with(context).load(StorageUtil.pathToReference(chatImageMessage.picturePath))
                 .placeholder(R.drawable.ic_fire_emoji)
                 .into(itemView.image_view_sender_message_image)
-            Picasso.get()
-                .load(user.profilePicturePath).placeholder(R.drawable.ic_fire_emoji)
+            GlideApp.with(context).load(user.profilePicturePath?.let {
+                StorageUtil.pathToReference(
+                    it
+                )
+            })
+                .placeholder(R.drawable.ic_fire_emoji)
                 .into(itemView.imageViewToChatLogSenderImage)
-            //
+
         }
     }
 

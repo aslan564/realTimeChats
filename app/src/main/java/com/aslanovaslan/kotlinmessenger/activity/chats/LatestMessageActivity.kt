@@ -1,4 +1,4 @@
-package com.aslanovaslan.kotlinmessenger.activity
+package com.aslanovaslan.kotlinmessenger.activity.chats
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,10 +9,15 @@ import android.view.MenuItem
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aslanovaslan.kotlinmessenger.R
+import com.aslanovaslan.kotlinmessenger.activity.profile.AccountActivity
+import com.aslanovaslan.kotlinmessenger.activity.register.MainActivity
+import com.aslanovaslan.kotlinmessenger.activityhelper.showSnackbar
 import com.aslanovaslan.kotlinmessenger.internal.ProgressFragment
+import com.aslanovaslan.kotlinmessenger.internal.internet.CheckNetworkState
 import com.aslanovaslan.kotlinmessenger.model.ChatTextMessage
 import com.aslanovaslan.kotlinmessenger.model.User
 import com.aslanovaslan.kotlinmessenger.recycleritem.LatestMessageItem
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
@@ -20,42 +25,51 @@ import com.google.firebase.ktx.Firebase
 import com.onesignal.OneSignal
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
+import kotlinx.android.synthetic.main.activity_chat_log.*
 import kotlinx.android.synthetic.main.activity_latest_message.*
 import kotlin.collections.HashMap
 
 class LatestMessageActivity : AppCompatActivity() {
     var groupAdapter = GroupAdapter<GroupieViewHolder>()
     val latestMessageMap = HashMap<String, ChatTextMessage>()
-    private lateinit var progressBar: ProgressFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setContentView(R.layout.activity_latest_message)
+        supportActionBar!!.title = "Messages"
+        if (!CheckNetworkState(this).isOnline()) {
+            showSnackbar(latestMessageContainer, "Internet yoxdu ")
+            return
+        }
+        isUserLoginOrNull()
+        fetchCurrentUser()
+        fetchLastMessageFireBase()
         // OneSignal Initialization
         OneSignal.startInit(this)
             .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
             .unsubscribeWhenNotificationsAreDisabled(true)
             .init()
-        setContentView(R.layout.activity_latest_message)
 
-        OneSignal.idsAvailable { userId, registrationId ->
+
+        OneSignal.idsAvailable { userId, _ ->
             if (userId != null) {
                 Log.d(TAG, "onCreate: $userId")
                 val databaseRef = Firebase.database.reference
-                databaseRef.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("oneSignalIds").setValue(userId)
+                databaseRef.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid)
+                    .child("oneSignalIds").setValue(userId)
             }
         }
 
-        supportActionBar!!.setDisplayShowHomeEnabled(true);
-        //supportActionBar!!.setLogo(R.drawable.ic_fire_emoji);
-        supportActionBar!!.setDisplayUseLogoEnabled(true);
+        buttonActionGoToAccount.setOnClickListener {
+            val intent = Intent(this, AccountActivity::class.java)
+            startActivity(intent)
+        }
 
-        supportActionBar!!.title = "Messages"
-        isUserLoginOrNull()
-        fetchCurrentUser()
-        fetchLastMessageFireBase()
+
+
 
         recyclerViewLatestMessage.apply {
-
+            setItemViewCacheSize(100)
+            setHasFixedSize(true)
             adapter = groupAdapter
             layoutManager = LinearLayoutManager(this@LatestMessageActivity)
             addItemDecoration(
@@ -65,7 +79,7 @@ class LatestMessageActivity : AppCompatActivity() {
                 )
 
             )
-            groupAdapter.setOnItemClickListener { item, view ->
+            groupAdapter.setOnItemClickListener { item, _ ->
                 val intent = Intent(this@LatestMessageActivity, ChatLog::class.java)
                 val row = item as LatestMessageItem
                 intent.putExtra(NewMessageActivity.USER_DATA, row.partnerUserItem)
@@ -113,7 +127,7 @@ class LatestMessageActivity : AppCompatActivity() {
         latestMessageMap.values.forEach {
             groupAdapter.add(
                 LatestMessageItem(
-                   it
+                    it
                 )
             )
         }
@@ -166,6 +180,21 @@ class LatestMessageActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        fetchLastMessageFireBase()
+    }
+    override fun onRestart() {
+        super.onRestart()
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+    override fun onResume() {
+        super.onResume()
+        fetchLastMessageFireBase()
+    }
     companion object {
         var CURRENT_USER: User? = null
         private const val TAG = "LatestMessageActivity"

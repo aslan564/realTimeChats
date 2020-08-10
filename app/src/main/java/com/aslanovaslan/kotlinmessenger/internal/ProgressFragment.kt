@@ -1,6 +1,5 @@
 package com.aslanovaslan.kotlinmessenger.internal
 
-import android.app.ProgressDialog
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle

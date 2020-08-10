@@ -7,7 +7,7 @@
     <string name="register_register">Register</string>
     <string name="login_login">Login</string>
     <string name="i_dont_have_an_account_login">I dont have an account</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
     <string name="sign_out">Sign Out</string>
     <string name="new_message">New Message</string>
     <string name="username_news">Username</string>
@@ -20,4 +20,11 @@
     <string name="user_profile">User Profile</string>
     <string name="aslan_coder">Aslan Coder</string>
     <string name="sender_image">sender image</string>
+    <string name="sender_video">sender video</string>
+    <string name="play_audio">play audio</string>
+    <string name="name_surname_account">Name Surname</string>
+    <string name="bios_here_account">Bios here</string>
+    <string name="update_account">Update</string>
+    <string name="take_video">Take Video</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

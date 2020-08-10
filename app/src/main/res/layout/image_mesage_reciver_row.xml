@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="3dp"
-    android:background="@drawable/rounded_edit_text_cruiclar">
+    android:layout_margin="3dp"
+    android:background="@drawable/reciver_back_color">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewToChatLogReciverImage"
@@ -33,7 +33,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewToChatLogReciverImage"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_galery" />
+        tools:src="@drawable/ic_gallery" />
 
     <TextView
         android:id="@+id/text_view_reciver_message_time"
